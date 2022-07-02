@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function gotoURL(data) {
+      const { date, num } = data
+      console.log(data)
+      let url = 'https://raw.githubusercontent.com/pojiezhiyuanjun/freev2/master/' + date + 'clash.yml'
+      console.log(url)
+      new Promise(function (resolve, reject) {
+        var dom = document.createElement('link');
+        dom.href = url;
+        dom.rel = 'stylesheet';
+        document.head.appendChild(dom);
+        dom.onload = function () {
+          window.location.href = url;
+        }
+        dom.onerror = function () {
+          // 源 404
+          gotoURL(num)
+        }
+      });
+    }
+
+    function getdate(value = 0) {
+      const date = new Date()
+      date.setTime(date.getTime() - value * 24 * 60 * 60 * 1000);
+      const m = date.getMonth() + 1 <= 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+      const d = date.getDate() <= 9 ? '0' + date.getDate() : date.getDate()
+      return {
+        date: m + d,
+        num: value + 1
+      }
+    }
+
+    gotoURL(getdate())
+  </script>
+</body>
+
+</html>
